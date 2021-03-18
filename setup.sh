@@ -67,15 +67,21 @@ git clone https://github.com/powerline/fonts.git
 cd fonts
 sh -c ./install.sh
 
-# Install ruby
-if test ! $(which ruby); then
-    echo "Installing Ruby..."
-    brew install ruby
-    echo "Adding the brew ruby path to shell config..."
-    echo 'export PATH="/usr/local/opt/ruby/bin:$PATH"' >>~/.bash_profile
-else
-    echo "Ruby already installed!"
-fi
+# Install rbenv
+brew install rbenv ruby-build
+
+# Add rbenv to bash so that it loads every time you open a terminal
+echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.zshrc
+source ~/.zshrc
+
+# Install Ruby
+rbenv install 3.0.0
+rbenv global 3.0.0
+ruby -v
+
+# Configure git
+git config --global color.ui true
+git config --global user.name "Eugene Moy"
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
 brew install nmap
@@ -83,17 +89,44 @@ brew install nmap
 # Install other useful binaries.
 brew install speedtest_cli
 
-# Core casks
-brew cask install --appdir="/Applications" alfred
-
-# Development tool casks
-brew cask install --appdir="/Applications" visual-studio-code
-
 # Misc casks
-brew cask install --appdir="/Applications" firefox
-brew cask install --appdir="/Applications" slack
-brew cask install --appdir="/Applications" 1password
-brew cask install --appdir="/Applications" caffeine
+CASKS=(
+    1password
+    alfred
+    bettertouchtool
+    clocker
+    discord
+    dozer
+    google-chrome
+    handbrake
+    iterm2
+    itsycal
+    iina
+    microsoft-office
+    notion
+    onedrive
+    pdf-expert
+    screenflick
+    royal-tsx
+    screenflick
+    screens
+    screens-connect
+    slack
+    sublime-text
+    wechat
+    virtualbox
+    virtualbox-extension-pack
+    visual-studio-code
+    vyprvpn
+    voov-meeting
+    zoom
+)
+
+echo "Installing casks"
+for i in "${CASKS[@]}"; do
+  echo "Installing $i"
+  brew cask install "$i"
+done
 
 # Remove outdated versions from the cellar.
 echo "Running brew cleanup..."
