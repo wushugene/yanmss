@@ -28,7 +28,7 @@ defaults write com.apple.finder ShowStatusBar -bool true
 # Check for Homebrew, and then install it
 if test ! $(which brew); then
     echo "Installing homebrew..."
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     echo "Homebrew installed successfully"
 else
     echo "Homebrew already installed!"
@@ -48,14 +48,7 @@ brew upgrade
 
 # Install iTerm2
 echo "Installing iTerm2..."
-brew cask install iterm2
-
-# Update the Terminal
-# Install oh-my-zsh
-echo "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-echo "Need to logout now to start the new SHELL..."
-logout
+brew install iterm2
 
 # Install Git
 echo "Installing Git..."
@@ -94,19 +87,17 @@ CASKS=(
     1password
     alfred
     bettertouchtool
-    clocker
     discord
     dozer
     google-chrome
     handbrake
-    iterm2
-    itsycal
     iina
     microsoft-office
+    microsoft-teams
     notion
-    onedrive
     pdf-expert
-    screenflick
+    qbittorrent
+    rocket
     royal-tsx
     screenflick
     screens
@@ -125,7 +116,7 @@ CASKS=(
 echo "Installing casks"
 for i in "${CASKS[@]}"; do
   echo "Installing $i"
-  brew cask install "$i"
+  brew install "$i"
 done
 
 # Remove outdated versions from the cellar.
